@@ -134,6 +134,7 @@ return {
       { key = "j", action = act.AdjustPaneSize({ "Down", 1 }) },
 
       -- Cancel the mode by pressing escape
+      { key = "Escape", action = "PopKeyTable" },
       { key = "Enter", action = "PopKeyTable" },
     },
     activate_pane = {

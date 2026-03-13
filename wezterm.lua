@@ -15,12 +15,22 @@ config.font = wezterm.font_with_fallback({
   "Apple Color Emoji",
 })
 config.use_ime = true
+config.window_padding = {
+  left = 10,
+  right = 10,
+  top = 0,
+  bottom = 15,
+}
 -- 背景の透過を抑えてコントラストを上げる
-config.window_background_opacity = 0.97
+config.window_background_opacity = 1.0
 -- ぼかしを無効化してにじみを軽減
 config.macos_window_background_blur = 0
 -- 太字で極端に明るくしない
 config.bold_brightens_ansi_colors = false
+config.inactive_pane_hsb = {
+  saturation = 0.85,
+  brightness = 0.72,
+}
 -- macOS のネイティブフルスクリーンを使用
 config.native_macos_fullscreen_mode = true
 
@@ -43,25 +53,17 @@ config.window_frame = {
 }
 
 -- タブバーを背景色に合わせる
-config.window_background_gradient = {
-  colors = { "#000000" },
-}
-
 -- タブの追加ボタンを非表示
 config.show_new_tab_button_in_tab_bar = false
--- nightlyのみ使用可能
--- タブの閉じるボタンを非表示
-config.show_close_tab_button_in_tabs = false
-
 -- タブ同士の境界線を非表示
 config.colors = {
   -- テキスト/背景のコントラストを高める
   foreground = "#e6e9ef",
-  background = "#0f1115",
+  background = "#212733",
   -- カーソル視認性
-  cursor_bg = "#e6e9ef",
-  cursor_border = "#e6e9ef",
-  cursor_fg = "#0f1115",
+  cursor_bg = "#7acaca",
+  cursor_border = "#7acaca",
+  cursor_fg = "#212733",
   -- 選択範囲のコントラスト
   selection_bg = "#334155",
   selection_fg = "#e6e9ef",
@@ -153,6 +155,15 @@ local function process_icon(pane)
   if name:find("ssh") then return "󰣀" end
   if name:find("zsh") or name:find("bash") or name:find("fish") or name == "sh" then return "" end
   return "" -- デフォルト: ターミナル
+end
+
+local function process_name(pane)
+  local name = pane and pane.foreground_process_name or ""
+  name = name:match("([^/]+)$") or name
+  if name == "" then
+    return ""
+  end
+  return name
 end
 
 -- タイトルからファイルパスらしき文字列を抽出
@@ -334,6 +345,9 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
   local icon = process_icon(pane)
   local folder = basename(cwd)
   if folder == "" then
+    folder = process_name(pane)
+  end
+  if folder == "" or folder == "wezterm" then
     folder = pane and pane.title or ""
   end
   local text = wezterm.truncate_right("  " .. icon .. "  " .. folder .. "  ", math.max(0, max_width - 1))
