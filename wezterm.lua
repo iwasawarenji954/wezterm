@@ -31,6 +31,14 @@ config.inactive_pane_hsb = {
   saturation = 0.85,
   brightness = 0.72,
 }
+-- 補完ミスなどで鳴る可聴ベルは無効化し、控えめな視覚ベルに置き換える
+config.audible_bell = "Disabled"
+config.visual_bell = {
+  fade_in_function = "EaseIn",
+  fade_in_duration_ms = 10,
+  fade_out_function = "EaseOut",
+  fade_out_duration_ms = 50,
+}
 -- macOS のネイティブフルスクリーンを使用
 config.native_macos_fullscreen_mode = true
 
@@ -60,6 +68,8 @@ config.colors = {
   -- テキスト/背景のコントラストを高める
   foreground = "#e6e9ef",
   background = "#212733",
+  -- ベル時も白く飛ばさず、背景に近い色だけを短く出す
+  visual_bell = "#212d42",
   -- カーソル視認性
   cursor_bg = "#7acaca",
   cursor_border = "#7acaca",
