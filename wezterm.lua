@@ -45,6 +45,22 @@ config.native_macos_fullscreen_mode = true
 ----------------------------------------------------
 -- Tab
 ----------------------------------------------------
+-- zsh プロンプト(.zshrc の powerline 風プロンプト)と色を合わせる
+-- 256色 -> HEX 対応:
+--   237 = #3a3a3a (ユーザー名セグメント / bg1)
+--   240 = #585858 (ディレクトリセグメント / bg2)
+--    24 = #005f87 (git セグメント / bg3)
+--    51 = #00ffff (プロンプト記号 › / 時計 / fr1)
+--    39 = #00afff (ホスト名 SSH 時)
+--    15 = #ffffff (文字色)
+local zsh = {
+  user_bg = "#3a3a3a",
+  dir_bg = "#585858",
+  git_bg = "#005f87",
+  accent = "#00ffff",
+  host = "#00afff",
+  fg = "#ffffff",
+}
 -- タイトルバーを表示
 config.window_decorations = "RESIZE"
 -- タブバーの表示
@@ -341,8 +357,10 @@ local function project_tag(cwd)
 end
 
 wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
-  local bg = tab.is_active and "#ae8b2d" or "#5c6d74"
-  local fg = "#FFFFFF"
+  -- zsh プロンプトのセグメント色に合わせる
+  -- アクティブ: git セグメントのブルー / 非アクティブ: ディレクトリセグメントのグレー
+  local bg = tab.is_active and zsh.git_bg or zsh.dir_bg
+  local fg = zsh.fg
 
   local pane = tab.active_pane
   local cwd = ""
