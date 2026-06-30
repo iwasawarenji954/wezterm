@@ -22,7 +22,7 @@ config.window_padding = {
   bottom = 15,
 }
 -- 背景の透過を抑えてコントラストを上げる
-config.window_background_opacity = 1.0
+config.window_background_opacity = 0.85
 -- ぼかしを無効化してにじみを軽減
 config.macos_window_background_blur = 0
 -- 太字で極端に明るくしない
@@ -46,7 +46,7 @@ config.native_macos_fullscreen_mode = true
 -- Tab
 ----------------------------------------------------
 -- タイトルバーを表示
-config.window_decorations = "TITLE | RESIZE"
+config.window_decorations = "RESIZE"
 -- タブバーの表示
 config.show_tabs_in_tab_bar = true
 -- タブが一つの時は非表示
